@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>SNAKE - The Game</title>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      color: orange;
+      text-align: center;
+      padding: 20px;
+    }
+
+    canvas {
+      border: 1px solid white;
+    }
+  </style>
+
+  <script>
+    var canvas;
+    var context;
+
+    var snakeX = 120;
+    var snakeY = 120;
+
+    var grid = 16;
+
+    function init() {
+      //get 2D context
+      canvas = document.getElementById('game');
+      context = canvas.getContext('2d');
+
+      // draw apple
+      context.fillStyle = 'red';
+      context.fillRect(320, 320, grid, grid);
+
+      //draw snake
+      context.fillStyle = 'green';
+      context.fillRect(snakeX, snakeY, grid, grid);
+
+      document.addEventListener('keydown', onKeyDownFunc);
+    }
+
+    function onKeyDownFunc(e){
+      //alert("Taste gedrückt: "+e.which);
+
+    context.clearRect(0,0, canvas.width, canvas.height);
+
+    if(e.which == 37){
+      snakeX = snakeX - grid;
+    }
+
+    if(e.which == 38){
+      snakeY = snakeY - grid;
+    }
+
+    if(e.which == 39){
+      snakeX = snakeX + grid;
+    }
+
+    if(e.which == 40){
+      snakeY = snakeY + grid;
+    }
+
+    if(snakeX > canvas.width){
+      snakeX = 0;
+    }
+
+    if(snakeX < 0){
+      snakeX = 400;
+    }
+
+    if(snakeY > canvas.height){
+      snakeY = 0;
+    }
+
+    if(snakeY < 0){
+      snakeY = 400;
+    }
+
+    //draw snake
+    context.fillStyle = 'green';
+    context.fillRect(snakeX, snakeY, grid, grid);
+
+    // draw apple
+    context.fillStyle = 'red';
+    context.fillRect(320, 320, grid, grid);
+
+  }
+  </script>
+
+</head>
+
+<body onload="init()">
+  <h1>SNAKE - The Game</h1>
+  <canvas id="game" width="400" height="400"></canvas>
+</body>
+
+</html>
