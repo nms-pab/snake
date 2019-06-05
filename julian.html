@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>SNAKE - The Game</title>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    h1  {
+    color: violet;
+    padding: 20px;
+  }
+
+    body {
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      border: 1px solid white;
+    }
+  </style>
+
+  <script>
+    var canvas;
+    var context;
+
+    var snakeX = 120;
+    var snakeY = 120;
+
+    var grid = 16;
+
+    function init() {
+      //get 2D context
+      canvas = document.getElementById('game');
+      context = canvas.getContext('2d');
+
+      // draw apple
+      context.fillStyle = 'red';
+      context.fillRect(320, 320, grid, grid);
+
+      //draw snake
+      context.fillStyle = 'green';
+      context.fillRect(120, 120, grid, grid);
+
+      document.addEventListener('keydown', onKeyDownFunc);
+    }
+
+    function onKeyDownFunc(e){
+      //alert("Taste gedrückt: "+e.which);
+
+      if(e.which == 37){
+        snakeX = snakeX - grid;
+      }
+
+
+      if(e.which == 38){
+        snakeY = snakeY - grid ;
+      }
+
+
+      if(e.which == 39){
+        snakeX = snakeX + grid;
+      }
+
+
+      if(e.which == 40){
+        snakeY = snakeY + grid;
+      }
+
+       context.clearRect(0,0, canvas.width,canvas.height);
+      context.fillStyle = 'green';
+      context.fillRect(snakeX, snakeY, grid, grid);
+       context.fillStyle = 'red';  context.fillRect(320, 320, grid, grid);
+    }
+
+  </script>
+
+</head>
+
+<body onload="init()">
+  <h1>HA GAY </h1>
+  <canvas id="game" width="400" height="400"></canvas>
+</body>
+
+</html>
