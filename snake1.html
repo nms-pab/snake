@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>SNAKE - The Game</title>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      border: 1px solid white;
+    }
+  </style>
+
+  <script>
+    var canvas;
+    var context;
+
+    //grid item size
+    //25 items, each 16 pixels (400/25)
+    var grid = 16;
+    var count = 0;
+
+    //apple position
+    var appleX = 320;
+    var appleY = 320;
+
+    //snake position
+    var snakeX = 160;
+    var snakeY = 160;
+
+    //snake direction --> horizontally/vertically
+    var snakeDx = grid;
+    var snakeDy = 0;
+
+    function init() {
+      //get 2D context
+      canvas = document.getElementById('game');
+      context = canvas.getContext('2d');
+
+      // draw apple
+      context.fillStyle = 'red';
+      //context.fillRect(320, 320, 20, 20);
+      context.fillRect(appleX, appleY, grid - 1, grid - 1);
+
+      //draw snake
+      context.fillStyle = 'green';
+      //context.fillRect(120, 120, 20, 20);
+      context.fillRect(snakeX, snakeY, grid - 1, grid - 1);
+
+      //listen to keydown events
+      document.addEventListener('keydown', onKeyDownFunc);
+    }
+
+    function onKeyDownFunc(e) {
+
+      /*
+            alert("Taste gedrückt: \n"
+            + "key: " + e.key + "\n"
+            + "keyCode: " + e.keyCode + "\n"
+            + "which: " + e.which + "\n"
+            + "charCode: " + e.charCode + "\n"
+            + "Zeichen : " + String.fromCharCode(e.charCode) + "\n"
+            );
+
+            */
+
+      //left arrow key
+      if (e.which == 37) {
+        snakeX -= grid;
+      }
+
+      //up arrow key
+      if (e.which == 38) {
+        snakeY -= grid;
+      }
+
+      //right arrow key
+      if (e.which == 39) {
+        snakeX += grid;
+      }
+
+      //down arrow key
+      if (e.which == 40) {
+        snakeY += grid;
+      }
+
+      //check borders
+      if (snakeX > canvas.width) {
+        snakeX = 0;
+      }
+
+      if (snakeX < 0) {
+        snakeX = canvas.width;
+      }
+
+      if (snakeY > canvas.height) {
+        snakeY = 0;
+      }
+
+      if (snakeY < 0) {
+        snakeY = canvas.height;
+      }
+
+      //collision detection
+      if (snakeX == appleX && snakeY == appleY) {
+        window.alert("collision");
+      }
+
+      //redraw apple and snake
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      //redraw snake
+      context.fillStyle = 'green';
+      context.fillRect(snakeX, snakeY, grid - 1, grid - 1);
+
+      //redraw apple
+      context.fillStyle = 'red';
+      context.fillRect(appleX, appleY, grid - 1, grid - 1);
+    }
+  </script>
+
+</head>
+
+<body onload="init()">
+  <canvas id="game" width="400" height="400"></canvas>
+</body>
+
+</html>
