@@ -3,7 +3,7 @@
 <html>
 
 <head>
-  <title>Every body dance now!</title>
+  <title>SNAKE - The Game</title>
 
   <style>
     html,
@@ -19,8 +19,8 @@
       justify-content: center;
     }
 
-    h1{
-      color: yellow;
+    h1 {
+      color: orange;
       padding: 20px;
     }
 
@@ -38,6 +38,11 @@
 
     var grid = 16;
 
+    var snakeDx = grid;
+    var snakeDy = 0;
+
+    var count = 0;
+
     function init() {
       //get 2D context
       canvas = document.getElementById('game');
@@ -51,50 +56,88 @@
       context.fillStyle = 'green';
       context.fillRect(120, 120, grid, grid);
 
-      document.addEventListener("keydown" , onkeyDownFunc);
-    }//init end
+      document.addEventListener('keydown' , onKeyDownFunc);
 
-    function onkeyDownFunc(e){
-    //  alert("Taste gedrückt: "+e.which);
-
-
-    if(e.which == 37){
-      snakeX = snakeX - grid;
+      requestAnimationFrame(loop);
     }
 
-    if(e.which == 38){
-      snakeY = snakeY - grid ;
+    function loop(){
+      //alert(snakeDx);
+      requestAnimationFrame(loop);
+
+      count = count + 1;
+
+      if(count < 4){
+        return;
+      }
+      count = 0
+
+      snakeX = snakeX + snakeDx;
+      snakeY = snakeY + snakeDy;
+
+      if(snakeX > canvas.width){
+        snakeX = 0;
+      }
+
+      if(snakeX < 0){
+        snakeX = canvas.width;
+      }
+
+      if(snakeY > canvas.height){
+        snakeY = 0;
+      }
+
+      if(snakeY < 0){
+        snakeY = canvas.height;
+      }
+
+      context.clearRect(0,0, canvas.width, canvas.height);
+
+      // //draw snake
+      context.fillStyle = 'green';
+      context.fillRect(snakeX, snakeY, grid, grid);
+
+      // draw apple
+      context.fillStyle = 'red';
+      context.fillRect(320, 320, grid, grid);
     }
 
-if(e.which == 39){
-  snakeX = snakeX + grid;
-}
+    function onKeyDownFunc(e){
+      // alert("Taste gedrückt: "+e.which);
+      //Pfeil nach links
+      if(e.which == 37){
+        //snakeX = snakeX - grid;
+        snakeDx = -grid;
+        snakeDy = 0;
+      }
 
-if(e.which == 40){
-  snakeY =snakeY +grid;
-}
+      //Pfeil nach oben
+      if(e.which == 38){
+        // snakeY = snakeY - grid;
+        snakeDx = 0;
+        snakeDy = -grid;
+      }
 
-if(snakeX > canvas.width){
-  snakeX = 0;
-}
+      //Pfeil nach rechts
+      if(e.which == 39){
+        // snakeX = snakeX + grid;
+        snakeDx = grid;
+        snakeDy = 0;
+      }
 
-    context.clearRect(0,0, canvas.width, canvas.height);
-
-    //draw snake
-    context.fillStyle = 'green';
-    context.fillRect(snakeX, snakeY, grid, grid);
-    // draw apple
-    context.fillStyle = 'red';
-    context.fillRect(320, 320, grid, grid);
-  }
-
+      //Pfeil nach unten
+      if(e.which == 40){
+        // snakeY = snakeY + grid;
+        snakeDx = 0;
+        snakeDy = grid;
+      }
+    }
   </script>
 
 </head>
 
 <body onload="init()">
-  <h1>Good game?</h1>
-
+  <h1>My Game</h1>
   <canvas id="game" width="400" height="400"></canvas>
 </body>
 
