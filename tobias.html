@@ -20,7 +20,7 @@
     }
 
     h1 {
-      color: orange;
+      color: blue;
       text-align: center;
       padding: 20px;
     }
@@ -38,6 +38,10 @@
     var snakeY = 120;
 
     var grid = 16;
+    var snakeDx = grid;
+
+    var snakeDy = 0;
+    var count = 0;
 
     function init() {
       //get 2D context
@@ -53,54 +57,83 @@
       context.fillRect(snakeX, snakeY, grid, grid);
 
       document.addEventListener('keydown', onKeyDownFunc);
+
+      requestAnimationFrame(loop);
     }
 
     function onKeyDownFunc(e){
       //alert("Taste gedrückt: "+e.which);
 
-    context.clearRect(0,0, canvas.width, canvas.height);
+    // context.clearRect(0,0, canvas.width, canvas.height);
 
     if(e.which == 37){
-      snakeX = snakeX - grid;
+      //snakeX = snakeX - grid;
+      snakeDx = -grid;
+      snakeDy = 0;
     }
 
     if(e.which == 38){
-      snakeY = snakeY - grid;
+      //snakeY = snakeY - grid;
+      snakeDx = 0;
+      snakeDy = -grid;
     }
 
     if(e.which == 39){
-      snakeX = snakeX + grid;
+      //snakeX = snakeX + grid;
+      snakeDx = grid;
+      snakeDy = 0;
     }
 
     if(e.which == 40){
-      snakeY = snakeY + grid;
+      //snakeY = snakeY + grid;
+      snakeDx = 0;
+      snakeDy = grid;
     }
-
-    if(snakeX > canvas.width){
-      snakeX = 0;
-    }
-
-    if(snakeX < 0){
-      snakeX = 400;
-    }
-
-    if(snakeY > canvas.height){
-      snakeY = 0;
-    }
-
-    if(snakeY < 0){
-      snakeY = 400;
-    }
-
-    //draw snake
-    context.fillStyle = 'green';
-    context.fillRect(snakeX, snakeY, grid, grid);
-
-    // draw apple
-    context.fillStyle = 'red';
-    context.fillRect(320, 320, grid, grid);
 
   }
+
+    function loop(){
+      //alert("LOOP");
+      requestAnimationFrame(loop);
+
+      count = count +1;
+
+      if(count < 4){
+        return;
+      }
+
+      count = 0;
+
+      snakeX = snakeX + snakeDx;
+      snakeY = snakeY + snakeDy;
+
+      if(snakeX > canvas.width){
+        snakeX = 0;
+      }
+
+      if(snakeX < 0){
+        snakeX = 400;
+      }
+
+      if(snakeY > canvas.height){
+        snakeY = 0;
+      }
+
+      if(snakeY < 0){
+        snakeY = 400;
+      }
+
+      context.clearRect(0,0, canvas.width, canvas.height);
+
+      //draw snake
+      context.fillStyle = 'green';
+      context.fillRect(snakeX, snakeY, grid, grid);
+
+      //draw apple
+      context.fillStyle = 'red';
+      context.fillRect(320, 320, grid, grid);
+    }
+
   </script>
 
 </head>
