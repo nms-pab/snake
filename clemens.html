@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <title>SNAKE - The Game</title>
+
   <style>
     html,
     body {
@@ -16,8 +18,9 @@
       align-items: center;
       justify-content: center;
     }
-    h1{
-      color: red;
+
+    h1 {
+      color: orange;
       padding: 20px;
     }
 
@@ -35,6 +38,11 @@
 
     var grid = 16;
 
+    var snakeDx = grid;
+    var snakeDy = 0;
+
+    var count = 0;
+
     function init() {
       //get 2D context
       canvas = document.getElementById('game');
@@ -45,45 +53,91 @@
       context.fillRect(320, 320, grid, grid);
 
       //draw snake
-      context.fillStyle = "green";
+      context.fillStyle = 'green';
       context.fillRect(120, 120, grid, grid);
 
-      document.addEventListener("keydown", onKeyDownFunc);
-    }//init end
+      document.addEventListener('keydown' , onKeyDownFunc);
 
-    function onKeyDownFunc(e){
-      //alert("Taste gedrückt: "+e.which);
-      if(e.which == 37){
-        snakeX = snakeX - grid;
+      requestAnimationFrame(loop);
+    }
+
+    function loop(){
+      //alert(snakeDx);
+      requestAnimationFrame(loop);
+
+      count = count + 1;
+
+      if(count < 4){
+        return;
       }
-      if(e.which == 38){
-        snakeY = snakeY - grid;
-      }
-      if(e.which == 39){
-        snakeX = snakeX + grid;
-      }
-      if(e.which == 40){
-        snakeY = snakeY + grid;
-      }
-      if(snakeX > canvas.widrh){
+      count = 0
+
+      snakeX = snakeX + snakeDx;
+      snakeY = snakeY + snakeDy;
+
+      if(snakeX > canvas.width){
         snakeX = 0;
       }
 
+      if(snakeX < 0){
+        snakeX = canvas.width;
+      }
+
+      if(snakeY > canvas.height){
+        snakeY = 0;
+      }
+
+      if(snakeY < 0){
+        snakeY = canvas.height;
+      }
 
       context.clearRect(0,0, canvas.width, canvas.height);
 
-      context.fillStyle = "green";
+      // //draw snake
+      context.fillStyle = 'green';
       context.fillRect(snakeX, snakeY, grid, grid);
+
       // draw apple
       context.fillStyle = 'red';
       context.fillRect(320, 320, grid, grid);
     }
-</script>
+
+    function onKeyDownFunc(e){
+      // alert("Taste gedrückt: "+e.which);
+      //Pfeil nach links
+      if(e.which == 37){
+        //snakeX = snakeX - grid;
+        snakeDx = -grid;
+        snakeDy = 0;
+      }
+
+      //Pfeil nach oben
+      if(e.which == 38){
+        // snakeY = snakeY - grid;
+        snakeDx = 0;
+        snakeDy = -grid;
+      }
+
+      //Pfeil nach rechts
+      if(e.which == 39){
+        // snakeX = snakeX + grid;
+        snakeDx = grid;
+        snakeDy = 0;
+      }
+
+      //Pfeil nach unten
+      if(e.which == 40){
+        // snakeY = snakeY + grid;
+        snakeDx = 0;
+        snakeDy = grid;
+      }
+    }
+  </script>
 
 </head>
 
 <body onload="init()">
-  <h1> Best game Ever!</h1>
+  <h1>My Game</h1>
   <canvas id="game" width="400" height="400"></canvas>
 </body>
 
