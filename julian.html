@@ -33,28 +33,26 @@
     var canvas;
     var context;
 
-    var snakeX = 120;
-    var snakeY = 120;
-
     var grid = 16;
+
+    var snakeX = getRandomInt(0, 25) * grid;
+    var snakeY = getRandomInt(0, 25) * grid;
+
+    var appleX = getRandomInt(0, 25) * grid;
+    var appleY = getRandomInt(0, 25) * grid;
 
     var snakeDx = grid;
     var snakeDy = 0;
 
     var count = 0;
 
+    var cells = [];
+    var snakeLength = 3;
+
     function init() {
       //get 2D context
       canvas = document.getElementById('game');
       context = canvas.getContext('2d');
-
-      // draw apple
-      context.fillStyle = 'red';
-      context.fillRect(320, 320, grid, grid);
-
-      //draw snake
-      context.fillStyle = 'green';
-      context.fillRect(120, 120, grid, grid);
 
       document.addEventListener('keydown' , onKeyDownFunc);
 
@@ -67,9 +65,10 @@
 
       count = count + 1;
 
-      if(count < 4 ){
+      if(count < 8){
         return;
       }
+
       count = 0;
 
       snakeX = snakeX + snakeDx;
@@ -91,15 +90,56 @@
         snakeY = canvas.height;
       }
 
-      context.clearRect(0,0, canvas.width, canvas.height);
+      cells.unshift({
+        x: snakeX,
+        y: snakeY
+      });
 
-      // //draw snake
-      context.fillStyle = 'green';
-      context.fillRect(snakeX, snakeY, grid, grid);
+      if(cells.length > snakeLength){
+        cells.pop();
+      }
+
+      context.clearRect(0,0, canvas.width, canvas.height);
 
       // draw apple
       context.fillStyle = 'red';
-      context.fillRect(320, 320, grid, grid);
+      context.fillRect(appleX, appleY, grid, grid);
+
+      // //draw snake
+      context.fillStyle = 'green';
+      //context.fillRect(snakeX, snakeY, grid, grid);
+      cells.forEach(function(cell, index){
+         context.fillRect(cell.x, cell.y, grid-1, grid-1);
+
+         //snake-apple collision
+           if(snakeX == appleX && snakeY == appleY){
+             //window.alert("KOLLISION");
+
+             appleX = getRandomInt(0, 25) * grid;
+             appleY = getRandomInt(0, 25) * grid;
+
+             snakeLength = snakeLength+1;
+           }
+
+         //snake-snake collision
+         for(var i = index + 1; i < cells.length; i++){
+           if(cell.x == cells[i].x && cell.y == cells[i].y){
+             cells = [];
+             snakeLength = 3;
+             snakeDx = grid;
+             snakeDy = 0;
+
+             appleX = getRandomInt(0, 25) * grid;
+             appleY = getRandomInt(0, 25) * grid;
+           }
+         }
+      }
+    );
+
+    }
+
+    function getRandomInt(min, max){
+      return Math.floor(Math.random() * (max - min)) + min;
     }
 
     function onKeyDownFunc(e){
@@ -137,7 +177,7 @@
 </head>
 
 <body onload="init()">
-  <h1hutschii!!</h1>
+  <h1>My Game</h1>
   <canvas id="game" width="400" height="400"></canvas>
 </body>
 
