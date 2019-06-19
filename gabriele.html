@@ -5,6 +5,8 @@
 <head>
   <title>SNAKE - The Game</title>
 
+  <meta name="author" content="Gabriele Praher">
+
   <style>
 
     html,
@@ -32,16 +34,21 @@
     var canvas;
     var context;
 
-    var snakeX = 120;
-    var snakeY = 120;
-
     var grid = 16;
+
+    var snakeX = getRandomInt(0, 25) * grid;
+    var snakeY = getRandomInt(0, 25) * grid;
+
+    var appleX = getRandomInt(0, 25) * grid;
+    var appleY = getRandomInt(0, 25) * grid;
 
     var snakeDx = grid;
     var snakeDy = 0;
 
     var count = 0;
 
+    var cells = [];
+    var snakeLength = 3;
 
       function init() {
       //get 2D context
@@ -49,12 +56,12 @@
       context = canvas.getContext('2d');
 
       // draw apple
-      context.fillStyle = 'red';
-      context.fillRect(320, 320, grid, grid);
+      //context.fillStyle = 'red';
+      //context.fillRect(appleX, appleY, grid, grid);
 
       //draw snake
-      context.fillStyle = 'green';
-      context.fillRect(snakeX, snakeY, grid, grid);
+      //context.fillStyle = 'green';
+      //context.fillRect(snakeX, snakeY, grid, grid);
 
       document.addEventListener('keydown', onKeyDownFunc);
 
@@ -129,15 +136,53 @@
        snakeX = canvas.width;
      }
 
+     cells.unshift({
+      x: snakeX,
+      y: snakeY
+    });
+
+     if(cells.length > snakeLength){
+      cells.pop();
+     }
+
      context.clearRect(0,0, canvas.width, canvas.height);
 
      // draw apple
      context.fillStyle = 'red';
-     context.fillRect(320, 320, grid, grid);
+     context.fillRect(appleX, appleY, grid-1, grid-1);
 
      //draw snake
      context.fillStyle = 'green';
-     context.fillRect( snakeX, snakeY, grid, grid);
+     //context.fillRect(snakeX, snakeY, grid, grid);
+     cells.forEach(function(cell, index){
+       context.fillRect(cell.x, cell.y, grid-1, grid-1)
+
+       //collision snake - apple
+       if(snakeX == appleX && snakeY == appleY){
+        // window.alert("KOLLISION")
+        
+        snakeLength = snakeLength+1;
+
+         appleX = getRandomInt(0, 25) * grid;
+         appleY = getRandomInt(0, 25) * grid;
+       }
+
+       //collision snake - snake
+       for(var i = index + 1; i < cells.length; i++){
+         if(cell.x == cells[i].x && cell.y == cells[i].y){
+           cells = [];
+           snakeLength = 3;
+           snakeDx = grid;
+           snakeDy = 0;
+        }
+     }
+   }
+   );
+
+   }
+
+   function getRandomInt(min, max){
+     return Math.floor(Math.random() * (max - min)) + min;
    }
   </script>
 
